@@ -1,5 +1,8 @@
 import java.util.*;
 import java.util.stream.Collectors;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class TaskService {	
@@ -30,4 +33,51 @@ public class TaskService {
 	    public List<Task> getAllTasks() {
 	        return tasks;
 	    }
+
+		public void importFromCsv(String filePath) throws IOException {
+        List<Task> importedTasks = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            boolean firstLine = true;
+
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+
+                if (firstLine) {
+                    firstLine = false;
+                    if (line.toLowerCase().contains("title")) {
+                        continue;
+                    }
+                }
+
+				String[] parts = line.split(",");
+
+                if (parts.length < 3) {
+                    throw new IllegalArgumentException("Invalid CSV row: " + line);
+                }
+
+                String title = parts[0].trim();
+                int priority = Integer.parseInt(parts[1].trim());
+                String status = parts[2].trim();
+
+                Task task = new Task(title, priority, status);
+
+                if (parts.length >= 4 && !parts[3].trim().isEmpty()) {
+                    LocalDate dueDate = LocalDate.parse(parts[3].trim());
+                    task.setDueDate(dueDate);
+                }
+
+                importedTasks.add(task);
+            }
+        }
+
+		tasks.clear();
+        tasks.addAll(importedTasks);
+
+        System.out.println("Activity: Imported " + importedTasks.size() + " tasks from " + filePath);
+    }
+	
 }
