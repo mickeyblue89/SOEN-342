@@ -1,9 +1,9 @@
-import java.util.*;
-import java.util.stream.Collectors;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class TaskService {	
 
@@ -18,18 +18,78 @@ public class TaskService {
 	        return t;
 	    }
 	    
-	    public List<Task> searchTasks(String name, String status, LocalDate from, LocalDate to) {
+	    public List<Task> searchTasks(Map<String, Object> criteria) {
 
-	        return tasks.stream()
-	                .filter(t -> name == null || t.getTitle().toLowerCase().contains(name.toLowerCase()))
-	                .filter(t -> status == null || t.getStatus().equalsIgnoreCase(status))
-	                .filter(t -> from == null || (t.getDueDate() != null && !t.getDueDate().isBefore(from)))
-	                .filter(t -> to == null || (t.getDueDate() != null && !t.getDueDate().isAfter(to)))
-	                .sorted(Comparator.comparing(Task::getDueDate,
-	                        Comparator.nullsLast(Comparator.naturalOrder())))
-	                .collect(Collectors.toList());
-	    }
+    return tasks.stream().filter(t -> {
 
+                if (criteria.containsKey("title")) {
+                    String name = (String) criteria.get("title");
+                    if (!t.getTitle().toLowerCase().contains(name.toLowerCase())) {
+                        return false;
+                    }
+                }
+
+                if (criteria.containsKey("status")) {
+                    String status = (String) criteria.get("status");
+                    if (!t.getStatus().equalsIgnoreCase(status)) {
+                        return false;
+                    }
+                }
+
+                if (criteria.containsKey("from")) {
+                    LocalDate from = (LocalDate) criteria.get("from");
+                    if (t.getDueDate() == null || t.getDueDate().isBefore(from)) {
+                        return false;
+                    }
+                }
+
+                if (criteria.containsKey("to")) {
+                    LocalDate to = (LocalDate) criteria.get("to");
+                    if (t.getDueDate() == null || t.getDueDate().isAfter(to)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            })
+            .sorted(Comparator.comparing(Task::getDueDate,
+                    Comparator.nullsLast(Comparator.naturalOrder())))
+            .collect(Collectors.toList());
+}
+
+public void updateTask(int id, String attribute, Object value) {
+
+    Task task = tasks.stream()
+            .filter(t -> t.getId() == id)
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException("Task not found"));
+
+    switch (attribute.toLowerCase()) {
+
+        case "title":
+            task.setTitle((String) value);
+            break;
+
+        case "description":
+            task.setDescription((String) value);
+            break;
+
+        case "status":
+            task.setStatus((String) value);
+            break;
+
+        case "priority":
+            task.setPriority((Integer) value);
+            break;
+
+        case "duedate":
+            task.setDueDate((LocalDate) value);
+            break;
+
+        default:
+            throw new RuntimeException("Invalid attribute: " + attribute);
+    }
+}
 	    public List<Task> getAllTasks() {
 	        return tasks;
 	    }

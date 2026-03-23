@@ -33,5 +33,16 @@ public class Task {
     public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
     public void setProject(Project project) { this.project = project; }
     public void setCollaborator(Collaborator collaborator) { this.collaborator = collaborator; }
+    public void setTitle(String title) {
+    this.title = title;
+}
+
+public void setStatus(String status) {
+    this.status = status;
+}
+
+public void setPriority(int priority) {
+    this.priority = priority;
+}
 
 }
