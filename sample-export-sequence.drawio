@@ -1,0 +1,78 @@
+<mxfile host="app.diagrams.net" modified="2026-04-01T00:00:00.000Z" agent="COMP342" version="22.1.0" type="device">
+  <diagram id="sample-export-seq" name="TaskDB exportCSV (class diagram)">
+    <mxGraphModel dx="1280" dy="860" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ll-act" value="Actor" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;participant=umlActor;size=55;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="24" width="70" height="640" as="geometry" />
+        </mxCell>
+        <mxCell id="ll-db" value="taskDB : TaskDB" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;participant=umlEntity;size=55;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="210" y="24" width="120" height="640" as="geometry" />
+        </mxCell>
+        <mxCell id="ll-task" value="t : Task" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;participant=umlEntity;size=55;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="410" y="24" width="100" height="640" as="geometry" />
+        </mxCell>
+        <mxCell id="ll-file" value="exportFile : File" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;participant=umlBoundary;size=55;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="600" y="24" width="130" height="640" as="geometry" />
+        </mxCell>
+        <mxCell id="loopFrame" value="loop [for each Task t in taskDB (composition 1 ..*)]" style="shape=umlFrame;whiteSpace=wrap;html=1;width=140;height=40;expanded=1;recursiveResize=0;fillColor=#f5f5f5;strokeWidth=2;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;opacity=50;" vertex="1" parent="1">
+          <mxGeometry x="28" y="268" width="748" height="384" as="geometry" />
+        </mxCell>
+        <mxCell id="msg1" value="exportCSV(fileName)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=11;endArrow=block;endFill=1;exitX=1;exitY=0.07;exitDx=0;exitDy=0;entryX=0;entryY=0.07;entryDx=0;entryDy=0;" edge="1" parent="1" source="ll-act" target="ll-db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg2" value="locate all Task instances&#xa;(composition TaskDB — Task)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;endArrow=block;endFill=1;exitX=0.92;exitY=0.11;exitDx=0;exitDy=0;entryX=0.92;entryY=0.145;entryDx=0;entryDy=0;" edge="1" parent="1" source="ll-db" target="ll-db">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="348" y="116" />
+              <mxPoint x="348" y="136" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg3" value="open writer / stream → exportFile" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;endArrow=block;endFill=1;exitX=1;exitY=0.165;exitDx=0;exitDy=0;entryX=0;entryY=0.165;entryDx=0;entryDy=0;" edge="1" parent="1" source="ll-db" target="ll-file">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg4" value="write(header row)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;endArrow=block;endFill=1;exitX=1;exitY=0.195;exitDx=0;exitDy=0;entryX=0;entryY=0.195;entryDx=0;entryDy=0;" edge="1" parent="1" source="ll-db" target="ll-file">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msgGt1" value="getT_title()" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;endArrow=block;endFill=1;exitX=1;exitY=0.44;exitDx=0;exitDy=0;entryX=0;entryY=0.44;entryDx=0;entryDy=0;" edge="1" parent="1" source="ll-db" target="ll-task">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msgRt1" value="t_title : String" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;endArrow=open;endFill=0;dashed=1;dashPattern=8 8;exitX=0;exitY=0.455;exitDx=0;exitDy=0;entryX=1;entryY=0.455;entryDx=0;entryDy=0;" edge="1" parent="1" source="ll-task" target="ll-db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msgGp" value="getPriorityLevel()" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;endArrow=block;endFill=1;exitX=1;exitY=0.495;exitDx=0;exitDy=0;entryX=0;entryY=0.495;entryDx=0;entryDy=0;" edge="1" parent="1" source="ll-db" target="ll-task">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msgRp" value="priorityLevel" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;endArrow=open;endFill=0;dashed=1;dashPattern=8 8;exitX=0;exitY=0.51;exitDx=0;exitDy=0;entryX=1;entryY=0.51;entryDx=0;entryDy=0;" edge="1" parent="1" source="ll-task" target="ll-db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msgGs" value="getStatus()" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;endArrow=block;endFill=1;exitX=1;exitY=0.55;exitDx=0;exitDy=0;entryX=0;entryY=0.55;entryDx=0;entryDy=0;" edge="1" parent="1" source="ll-db" target="ll-task">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msgRs" value="status : String" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;endArrow=open;endFill=0;dashed=1;dashPattern=8 8;exitX=0;exitY=0.565;exitDx=0;exitDy=0;entryX=1;entryY=0.565;entryDx=0;entryDy=0;" edge="1" parent="1" source="ll-task" target="ll-db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msgGd" value="getDueDate()" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;endArrow=block;endFill=1;exitX=1;exitY=0.605;exitDx=0;exitDy=0;entryX=0;entryY=0.605;entryDx=0;entryDy=0;" edge="1" parent="1" source="ll-db" target="ll-task">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msgRd" value="dueDate : Date" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;endArrow=open;endFill=0;dashed=1;dashPattern=8 8;exitX=0;exitY=0.62;exitDx=0;exitDy=0;entryX=1;entryY=0.62;entryDx=0;entryDy=0;" edge="1" parent="1" source="ll-task" target="ll-db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msgRow" value="write(CSV data row)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;endArrow=block;endFill=1;exitX=1;exitY=0.66;exitDx=0;exitDy=0;entryX=0;entryY=0.66;entryDx=0;entryDy=0;" edge="1" parent="1" source="ll-db" target="ll-file">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msgClose" value="close stream" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;endArrow=block;endFill=1;exitX=1;exitY=0.815;exitDx=0;exitDy=0;entryX=0;entryY=0.815;entryDx=0;entryDy=0;" edge="1" parent="1" source="ll-db" target="ll-file">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msgRet" value="return exportFile : File" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=11;endArrow=open;endFill=0;dashed=1;dashPattern=8 8;exitX=0;exitY=0.875;exitDx=0;exitDy=0;entryX=1;entryY=0.875;entryDx=0;entryDy=0;" edge="1" parent="1" source="ll-db" target="ll-act">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="note" value="Aligns with class diagram:&#xa;TaskDB.exportCSV(fileName) : File&#xa;Task attributes: t_title, priorityLevel,&#xa;status, dueDate, …&#xa;&#xa;iCalGateway / iCallLibrary are for&#xa;calendar export — not this CSV path." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;size=14;strokeWidth=1;fillColor=#fff4c8;strokeColor=#d79b00;align=left;spacingLeft=6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="800" y="48" width="260" height="130" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
