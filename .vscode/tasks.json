@@ -2,21 +2,33 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Compile Java",
+      "label": "Maven Compile",
       "type": "process",
-      "command": "powershell",
+      "command": "mvn",
       "args": [
-        "-NoProfile",
-        "-ExecutionPolicy",
-        "Bypass",
-        "-File",
-        "${workspaceFolder}/scripts/compile-java.ps1"
+        "-f",
+        "${workspaceFolder}/Code/pom.xml",
+        "compile"
       ],
       "group": {
         "kind": "build",
         "isDefault": true
       },
       "problemMatcher": "$javac",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "Maven Run",
+      "type": "process",
+      "command": "mvn",
+      "args": [
+        "-f",
+        "${workspaceFolder}/Code/pom.xml",
+        "exec:java"
+      ],
+      "problemMatcher": [],
       "options": {
         "cwd": "${workspaceFolder}"
       }
