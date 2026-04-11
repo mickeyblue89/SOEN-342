@@ -374,9 +374,13 @@ public class TaskDB {
     }
 
     public void exportCSV(String fileName) throws IOException {
+        exportTasksToCSV(getAllTasks(), fileName);
+    }
+
+    public void exportTasksToCSV(List<Task> tasks, String fileName) throws IOException {
         List<String> lines = new ArrayList<>();
         lines.add("TaskName,Description,Subtask,Status,Priority,DueDate,ProjectName,ProjectDescription,Collaborator,CollaboratorCategory");
-        for (Task task : getAllTasks()) {
+        for (Task task : tasks) {
             if (task.getSubtasks().isEmpty()) {
                 lines.add(toCsvLine(task, null));
             } else {

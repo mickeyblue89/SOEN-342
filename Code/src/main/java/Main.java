@@ -161,7 +161,9 @@ public class Main {
     }
 
     private static void searchTasks(TaskDB taskDB) {
-        listTasks(taskDB.searchTasks(collectSearchCriteria()));
+        List<Task> tasks = taskDB.searchTasks(collectSearchCriteria());
+        listTasks(tasks);
+        promptExportTasksToCsv(taskDB, tasks);
     }
 
     private static void viewTasks(TaskDB taskDB) {
@@ -313,6 +315,27 @@ public class Main {
         for (Task task : tasks) {
             String project = task.getProject() == null ? "-" : task.getProject().getP_name();
             System.out.println(task.getId() + " | " + task.getTitle() + " | " + task.getStatus() + " | due=" + task.getDueDateAsLocalDate() + " | project=" + project);
+        }
+    }
+
+    private static void promptExportTasksToCsv(TaskDB taskDB, List<Task> tasks) {
+        if (tasks.isEmpty()) {
+            return;
+        }
+
+        System.out.print("Export current search results to CSV? (Y/N): ");
+        String choice = SCANNER.nextLine().trim();
+        if (!"Y".equalsIgnoreCase(choice)) {
+            return;
+        }
+
+        System.out.print("CSV file path: ");
+        String filePath = SCANNER.nextLine().trim();
+        try {
+            taskDB.exportTasksToCSV(tasks, filePath);
+            System.out.println("CSV exported to " + filePath);
+        } catch (IOException exception) {
+            throw new IllegalStateException("Failed to export CSV: " + exception.getMessage(), exception);
         }
     }
 
