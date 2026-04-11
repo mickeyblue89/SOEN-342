@@ -278,6 +278,10 @@ public class Task implements Serializable {
         return creationDate;
     }
 
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
     public int getPriority() {
         return priorityLevel;
     }
@@ -308,6 +312,9 @@ public class Task implements Serializable {
     public LocalDate getDueDateAsLocalDate() {
         if (dueDate == null) {
             return null;
+        }
+        if (dueDate instanceof java.sql.Date sqlDate) {
+            return sqlDate.toLocalDate();
         }
         return dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }

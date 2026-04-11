@@ -1,6 +1,7 @@
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.UUID;
@@ -21,14 +22,16 @@ public class iCalGateway {
         Calendar calendar = new Calendar();
         calendar.getProperties().add(new ProdId("-//Personal Task Management System//iCal4j Export//EN"));
         calendar.getProperties().add(Version.VERSION_2_0);
+        int exportedCount = 0;
 
         for (Task task : tasks) {
-            if (task.getDueDate() == null) {
+            LocalDate dueDate = task.getDueDateAsLocalDate();
+            if (dueDate == null) {
                 continue;
             }
 
             java.util.Date utilDate = java.util.Date.from(
-                    task.getDueDate().toInstant().atZone(ZoneId.systemDefault()).toInstant());
+                    dueDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
             DateTime start = new DateTime(utilDate);
             VEvent event = new VEvent(start, task.getTitle());
@@ -36,6 +39,11 @@ public class iCalGateway {
             event.getProperties().add(new Priority(task.getPriority()));
             event.getProperties().add(new Uid(UUID.randomUUID().toString()));
             calendar.getComponents().add(event);
+            exportedCount++;
+        }
+
+        if (exportedCount == 0) {
+            throw new IllegalStateException("Tasks without a due date are skipped during iCalendar export.");
         }
 
         Path file = Path.of("tasks.ics");

@@ -43,9 +43,11 @@ public class Recurrence implements Serializable {
         String normalized = recurrenceType == null ? "" : recurrenceType.trim().toUpperCase();
         if (normalized.startsWith("WEEKLY")) {
             Set<DayOfWeek> weekdays = parseWeekdays(normalized);
+            int intervalWeeks = Math.max(count, 1);
             LocalDate cursor = start_Date;
             while (!isLimitReached(dates, cursor)) {
-                if (weekdays.contains(cursor.getDayOfWeek())) {
+                long weeksFromStart = java.time.temporal.ChronoUnit.WEEKS.between(start_Date, cursor);
+                if (weeksFromStart % intervalWeeks == 0 && weekdays.contains(cursor.getDayOfWeek())) {
                     dates.add(cursor);
                 }
                 cursor = cursor.plusDays(1);

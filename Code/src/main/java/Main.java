@@ -39,7 +39,11 @@ public class Main {
                     default -> System.out.println("Invalid option.");
                 }
             } catch (Exception exception) {
-                System.out.println("Error: " + exception.getMessage());
+                String message = exception.getMessage();
+                if (message == null || message.isBlank()) {
+                    message = exception.getClass().getSimpleName();
+                }
+                System.out.println("Error: " + message);
             }
         }
     }
@@ -95,10 +99,8 @@ public class Main {
         String tags = SCANNER.nextLine().trim();
         if (!tags.isBlank()) {
             for (String rawTag : tags.split(",")) {
-                Tag tag = taskDB.findOrCreateTag(rawTag.trim());
-                task.organizeTask(tag);
+                taskDB.addTagToTask(task.getId(), rawTag.trim());
             }
-            taskDB.save();
         }
 
         System.out.println("Created task with id " + task.getId());
@@ -129,10 +131,7 @@ public class Main {
         int taskId = Integer.parseInt(SCANNER.nextLine());
         System.out.print("Project id: ");
         int projectId = Integer.parseInt(SCANNER.nextLine());
-        Project project = taskDB.getProject(projectId);
-        Task task = taskDB.getTask(taskId);
-        project.addTask(task);
-        taskDB.save();
+        taskDB.assignTaskToProject(taskId, projectId);
         System.out.println("Task assigned to project.");
     }
 
