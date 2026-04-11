@@ -40,7 +40,7 @@ public abstract class Collaborator implements Serializable {
 
     public boolean isOverloaded() {
         refreshOpenTaskCount();
-        return num_open_tasks > maxTasks;
+        return num_open_tasks >= maxTasks;
     }
 
     public int getC_id() {
