@@ -28,8 +28,7 @@ If you are using the command line, compile and run the project with your Java/Ma
 
 ## Data Storage
 
-- The program saves its data automatically into `taskdb.ser`.
-- A serialized database file already exists in the repository root and another copy exists under `Code/`.
+- The program saves its data automatically into `taskdb.ser`for portability compatibility, however if required to see a fully working version that requires a DB configuration as shown in the DEMO please see the Demo Branch.
 - When you choose `0. Exit`, the current database is saved before the program closes.
 
 ## Main Menu
