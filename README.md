@@ -28,9 +28,14 @@ If you are using the command line, compile and run the project with your Java/Ma
 
 ## Data Storage
 
-- The program saves its data automatically into `taskdb.ser`.
-- A serialized database file already exists in the repository root and another copy exists under `Code/`.
-- When you choose `0. Exit`, the current database is saved before the program closes.
+- For users with different database setup:
+
+Open src/main/resources/database.properties
+Update these values to match their SQL setup:
+
+jdbc.url=jdbc:mysql://YOUR_HOST:YOUR_PORT/YOURDB_NAME
+jdbc.user=YOUR_USERNAME
+jdbc.password=YOUR_PASSWORD
 
 ## Main Menu
 

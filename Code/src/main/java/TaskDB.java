@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
@@ -15,12 +16,35 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 
 public class TaskDB {
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/task_manager";
-    private static final String JDBC_USER = "root";
-    private static final String JDBC_PASSWORD = "admin";
+    private static String JDBC_URL;
+    private static String JDBC_USER;
+    private static String JDBC_PASSWORD;
     private static TaskDB INSTANCE;
+
+    static {
+        loadDatabaseConfiguration();
+    }
+
+    private static void loadDatabaseConfiguration() {
+        Properties properties = new Properties();
+        try (InputStream input = TaskDB.class.getClassLoader().getResourceAsStream("database.properties")) {
+            if (input == null) {
+                throw new IOException("database.properties file not found in classpath");
+            }
+            properties.load(input);
+            JDBC_URL = properties.getProperty("jdbc.url", "jdbc:mysql://localhost:3306/task_manager");
+            JDBC_USER = properties.getProperty("jdbc.user", "root");
+            JDBC_PASSWORD = properties.getProperty("jdbc.password", "admin");
+        } catch (IOException exception) {
+            System.err.println("Warning: Could not load database.properties, using default configuration");
+            JDBC_URL = "jdbc:mysql://localhost:3306/task_manager";
+            JDBC_USER = "root";
+            JDBC_PASSWORD = "admin";
+        }
+    }
 
     public TaskDB() {
         INSTANCE = this;
